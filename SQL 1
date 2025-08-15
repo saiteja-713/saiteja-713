@@ -1,0 +1,76 @@
+-- Create the Books table with the following columns:
+-- book_id: unique identifier for each book, auto-incremented, primary key
+-- title: the title of the book, cannot be null
+-- author: the author of the book, cannot be null
+-- genre: optional genre of the book
+-- published_year: year the book was published
+-- is_available: status if the book is available, defaults to TRUE (available)
+CREATE TABLE Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    genre VARCHAR(100),
+    published_year YEAR,
+    is_available BOOLEAN DEFAULT TRUE
+);
+
+
+
+
+
+-- Create the Librarians table with the following columns:
+-- librarian_id: unique identifier for each librarian, auto-incremented, primary key
+-- name: librarian's full name, cannot be null
+-- email: optional email address
+-- phone_number: optional contact number
+-- hire_date: the date the librarian was hired, defaults to the current date
+CREATE TABLE Librarians (
+    librarian_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    phone_number VARCHAR(15),
+    hire_date DATE DEFAULT (CURRENT_DATE)
+);
+
+
+
+
+-- Create the Borrowing table to manage borrowing transactions:
+-- loan_id: unique identifier for each loan, auto-incremented, primary key
+-- book_id: foreign key referencing the Books table
+-- member_id: foreign key referencing the Members table
+-- borrow_date: the date the book was borrowed, defaults to current date
+-- return_date: the date the book was returned (can be NULL if not returned yet)
+-- librarian_id: foreign key referencing the Librarians table
+CREATE TABLE Borrowing (
+    loan_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    book_id INT,
+    member_id INT,
+    borrow_date DATE DEFAULT (CURRENT_DATE),
+    return_date DATE,
+    librarian_id INT,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    FOREIGN KEY (librarian_id) REFERENCES Librarians(librarian_id)
+);
+
+
+
+-- Insert book records into the Books table
+INSERT INTO Books (title, author, genre, published_year) VALUES
+('The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 1925),
+('1984', 'George Orwell', 'Dystopian', 1949),
+('To Kill a Mockingbird', 'Harper Lee', 'Classic', 1960);
+
+
+-- Insert member records into the Members table
+INSERT INTO Members (name, email, phone_number) VALUES
+('Alen King', 'alenking@example.com', '1234567890'),
+('Alece Hofman', 'alecehofman@example.com', '9876543210');
+
+
+
+-- Insert librarian records into the Librarians table
+INSERT INTO Librarians (name, email, phone_number) VALUES 
+('Nail Horn', 'nail@example.com', '4567891230'), 
+('Garden McGraw', 'garden@example.com', '7894561230');
